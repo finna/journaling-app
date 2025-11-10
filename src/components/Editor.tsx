@@ -1,6 +1,6 @@
 'use client'
 
-import { JournalEntry } from '@/lib/types'
+import { JournalEntry, COLOR_OPTIONS, EntryColor } from '@/lib/types'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useState, useEffect } from 'react'
@@ -13,15 +13,18 @@ interface EditorProps {
 
 export default function Editor({ entry, onSave }: EditorProps) {
   const [content, setContent] = useState('')
+  const [color, setColor] = useState<EntryColor | undefined>(undefined)
   const [viewMode, setViewMode] = useState(false)
   const [isSaved, setIsSaved] = useState(true)
 
   useEffect(() => {
     if (entry) {
       setContent(entry.content)
+      setColor(entry.color)
       setIsSaved(true)
     } else {
       setContent('')
+      setColor(undefined)
     }
     setViewMode(false)
   }, [entry])
@@ -31,11 +34,17 @@ export default function Editor({ entry, onSave }: EditorProps) {
     setIsSaved(false)
   }
 
+  const handleColorChange = (newColor: EntryColor | undefined) => {
+    setColor(newColor)
+    setIsSaved(false)
+  }
+
   const handleSave = () => {
     if (entry) {
       onSave({
         ...entry,
         content,
+        color,
         updatedAt: Date.now(),
       })
       setIsSaved(true)
@@ -87,6 +96,33 @@ export default function Editor({ entry, onSave }: EditorProps) {
             <Eye size={18} />
             Preview
           </button>
+
+          {/* Color Picker */}
+          <div className="ml-4 pl-4 border-l border-slate-200 flex items-center gap-2">
+            <label className="text-sm text-slate-600 font-medium">Color:</label>
+            <select
+              value={color || ''}
+              onChange={(e) => handleColorChange(e.target.value as EntryColor | undefined)}
+              className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">None</option>
+              {COLOR_OPTIONS.map((option) => (
+                <option key={option.color} value={option.color}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+
+            {/* Color Preview */}
+            {color && (
+              <div
+                className={`w-6 h-6 rounded border-2 ${
+                  COLOR_OPTIONS.find(o => o.color === color)?.bgClass
+                } ${COLOR_OPTIONS.find(o => o.color === color)?.borderClass}`}
+                title={COLOR_OPTIONS.find(o => o.color === color)?.label}
+              />
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-2">

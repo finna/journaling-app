@@ -1,6 +1,6 @@
 'use client'
 
-import { JournalEntry } from '@/lib/types'
+import { JournalEntry, COLOR_OPTIONS } from '@/lib/types'
 import { formatDate, truncateText, extractFirstLine } from '@/lib/utils'
 import { Plus, Trash2 } from 'lucide-react'
 
@@ -57,9 +57,20 @@ export default function Sidebar({
                   onClick={() => onSelectEntry(entry.id)}
                   className="w-full text-left"
                 >
-                  <h3 className="font-semibold text-slate-900 text-sm truncate">
-                    {extractFirstLine(entry.content) || 'Untitled'}
-                  </h3>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold text-slate-900 text-sm truncate flex-1">
+                      {extractFirstLine(entry.content) || 'Untitled'}
+                    </h3>
+                    {entry.color && (
+                      <div
+                        className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
+                          COLOR_OPTIONS.find(o => o.color === entry.color)?.bgClass
+                        } ${COLOR_OPTIONS.find(o => o.color === entry.color)?.textClass}`}
+                      >
+                        {COLOR_OPTIONS.find(o => o.color === entry.color)?.label}
+                      </div>
+                    )}
+                  </div>
                   <p className="text-xs text-slate-500 mt-1">
                     {formatDate(entry.updatedAt)}
                   </p>
