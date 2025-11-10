@@ -5,6 +5,7 @@ import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useState, useEffect } from 'react'
 import { Eye, Edit } from 'lucide-react'
+import ShareButtons from './ShareButtons'
 
 interface EditorProps {
   entry: JournalEntry | null
@@ -93,6 +94,7 @@ export default function Editor({ entry, onSave }: EditorProps) {
           {!isSaved && (
             <span className="text-sm text-red-600 font-medium">Unsaved changes</span>
           )}
+          <ShareButtons entry={entry} />
           <button
             onClick={handleSave}
             disabled={isSaved}
