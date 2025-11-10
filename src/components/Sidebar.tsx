@@ -58,7 +58,7 @@ export default function Sidebar({
                   className="w-full text-left"
                 >
                   <h3 className="font-semibold text-slate-900 text-sm truncate">
-                    {extractFirstLine(entry.content) || 'Untitled'}
+                    {entry.title || 'Untitled'}
                   </h3>
                   <p className="text-xs text-slate-500 mt-1">
                     {formatDate(entry.updatedAt)}

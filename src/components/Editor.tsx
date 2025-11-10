@@ -12,19 +12,27 @@ interface EditorProps {
 }
 
 export default function Editor({ entry, onSave }: EditorProps) {
+  const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [viewMode, setViewMode] = useState(false)
   const [isSaved, setIsSaved] = useState(true)
 
   useEffect(() => {
     if (entry) {
+      setTitle(entry.title)
       setContent(entry.content)
       setIsSaved(true)
     } else {
+      setTitle('')
       setContent('')
     }
     setViewMode(false)
   }, [entry])
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value)
+    setIsSaved(false)
+  }
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value)
@@ -35,6 +43,7 @@ export default function Editor({ entry, onSave }: EditorProps) {
     if (entry) {
       onSave({
         ...entry,
+        title: title || 'Untitled',
         content,
         updatedAt: Date.now(),
       })
@@ -107,23 +116,36 @@ export default function Editor({ entry, onSave }: EditorProps) {
         </div>
       </div>
 
-      {/* Content Area */}
-      <div className="flex-1 overflow-hidden">
-        {!viewMode ? (
-          <textarea
-            value={content}
-            onChange={handleContentChange}
-            onKeyDown={handleKeyDown}
-            placeholder="Start writing your journal entry... (Markdown is supported)"
-            className="w-full h-full p-6 font-mono text-sm resize-none focus:outline-none border-none"
-          />
-        ) : (
-          <div className="w-full h-full p-6 overflow-y-auto">
-            <div className="prose prose-sm max-w-none dark:prose-invert">
-              <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
+      {/* Title and Content Area */}
+      <div className="flex-1 overflow-hidden flex flex-col">
+        {/* Title Input */}
+        <input
+          type="text"
+          value={title}
+          onChange={handleTitleChange}
+          placeholder="Entry title..."
+          className="border-b border-slate-200 px-6 py-3 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+        />
+
+        {/* Content Area */}
+        <div className="flex-1 overflow-hidden">
+          {!viewMode ? (
+            <textarea
+              value={content}
+              onChange={handleContentChange}
+              onKeyDown={handleKeyDown}
+              placeholder="Start writing your journal entry... (Markdown is supported)"
+              className="w-full h-full p-6 font-mono text-sm resize-none focus:outline-none border-none"
+            />
+          ) : (
+            <div className="w-full h-full p-6 overflow-y-auto">
+              <h1 className="text-2xl font-bold mb-4 text-slate-900">{title || 'Untitled'}</h1>
+              <div className="prose prose-sm max-w-none dark:prose-invert">
+                <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )
