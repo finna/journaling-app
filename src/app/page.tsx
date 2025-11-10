@@ -51,14 +51,14 @@ export default function Home() {
 
   if (!isLoaded) {
     return (
-      <div className="flex items-center justify-center h-screen bg-white">
-        <p className="text-slate-400">Loading...</p>
+      <div className="flex items-center justify-center h-screen bg-white dark:bg-slate-950">
+        <p className="text-slate-400 dark:text-slate-500">Loading...</p>
       </div>
     )
   }
 
   return (
-    <div className="flex h-screen bg-white">
+    <div className="flex h-screen bg-white dark:bg-slate-950">
       <Sidebar
         entries={entries}
         selectedId={selectedId}

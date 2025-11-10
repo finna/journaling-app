@@ -61,25 +61,25 @@ export default function Editor({ entry, onSave }: EditorProps) {
 
   if (!entry) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-white">
+      <div className="flex-1 flex items-center justify-center bg-white dark:bg-slate-950">
         <div className="text-center">
-          <p className="text-slate-400 text-lg">Select or create an entry to start writing</p>
+          <p className="text-slate-400 dark:text-slate-500 text-lg">Select or create an entry to start writing</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-white">
+    <div className="flex-1 flex flex-col bg-white dark:bg-slate-950">
       {/* Toolbar */}
-      <div className="border-b border-slate-200 p-4 flex items-center justify-between bg-slate-50">
+      <div className="border-b border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between bg-slate-50 dark:bg-slate-900">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setViewMode(false)}
             className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
               !viewMode
-                ? 'bg-blue-600 text-white'
-                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                ? 'bg-blue-600 dark:bg-blue-500 text-white'
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600'
             }`}
           >
             <Edit size={18} />
@@ -89,8 +89,8 @@ export default function Editor({ entry, onSave }: EditorProps) {
             onClick={() => setViewMode(true)}
             className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
               viewMode
-                ? 'bg-blue-600 text-white'
-                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                ? 'bg-blue-600 dark:bg-blue-500 text-white'
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600'
             }`}
           >
             <Eye size={18} />
@@ -100,15 +100,15 @@ export default function Editor({ entry, onSave }: EditorProps) {
 
         <div className="flex items-center gap-2">
           {!isSaved && (
-            <span className="text-sm text-red-600 font-medium">Unsaved changes</span>
+            <span className="text-sm text-red-600 dark:text-red-400 font-medium">Unsaved changes</span>
           )}
           <button
             onClick={handleSave}
             disabled={isSaved}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               isSaved
-                ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                : 'bg-green-600 hover:bg-green-700 text-white'
+                ? 'bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-500 cursor-not-allowed'
+                : 'bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white'
             }`}
           >
             Save
@@ -124,7 +124,7 @@ export default function Editor({ entry, onSave }: EditorProps) {
           value={title}
           onChange={handleTitleChange}
           placeholder="Entry title..."
-          className="border-b border-slate-200 px-6 py-3 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+          className="border-b border-slate-200 dark:border-slate-700 px-6 py-3 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-inset bg-white dark:bg-slate-950 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
         />
 
         {/* Content Area */}
@@ -135,11 +135,11 @@ export default function Editor({ entry, onSave }: EditorProps) {
               onChange={handleContentChange}
               onKeyDown={handleKeyDown}
               placeholder="Start writing your journal entry... (Markdown is supported)"
-              className="w-full h-full p-6 font-mono text-sm resize-none focus:outline-none border-none"
+              className="w-full h-full p-6 font-mono text-sm resize-none focus:outline-none border-none bg-white dark:bg-slate-950 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           ) : (
             <div className="w-full h-full p-6 overflow-y-auto">
-              <h1 className="text-2xl font-bold mb-4 text-slate-900">{title || 'Untitled'}</h1>
+              <h1 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">{title || 'Untitled'}</h1>
               <div className="prose prose-sm max-w-none dark:prose-invert">
                 <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
               </div>
