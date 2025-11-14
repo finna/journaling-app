@@ -4,7 +4,8 @@ import { JournalEntry } from '@/lib/types'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useState, useEffect } from 'react'
-import { Eye, Edit } from 'lucide-react'
+import { Eye, Edit, Sparkles } from 'lucide-react'
+import AIAnalysis from './AIAnalysis'
 
 interface EditorProps {
   entry: JournalEntry | null
@@ -16,6 +17,7 @@ export default function Editor({ entry, onSave }: EditorProps) {
   const [content, setContent] = useState('')
   const [viewMode, setViewMode] = useState(false)
   const [isSaved, setIsSaved] = useState(true)
+  const [isAnalysisOpen, setIsAnalysisOpen] = useState(false)
 
   useEffect(() => {
     if (entry) {
@@ -103,6 +105,19 @@ export default function Editor({ entry, onSave }: EditorProps) {
             <span className="text-sm text-red-600 font-medium">Unsaved changes</span>
           )}
           <button
+            onClick={() => setIsAnalysisOpen(true)}
+            disabled={!content.trim()}
+            title="Analyze with AI"
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+              !content.trim()
+                ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+            }`}
+          >
+            <Sparkles size={18} />
+            Analyze
+          </button>
+          <button
             onClick={handleSave}
             disabled={isSaved}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -147,6 +162,14 @@ export default function Editor({ entry, onSave }: EditorProps) {
           )}
         </div>
       </div>
+
+      {/* AI Analysis Modal */}
+      <AIAnalysis
+        title={title}
+        content={content}
+        isOpen={isAnalysisOpen}
+        onClose={() => setIsAnalysisOpen(false)}
+      />
     </div>
   )
 }

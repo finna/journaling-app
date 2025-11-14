@@ -3,18 +3,31 @@
 import { useState, useEffect } from 'react'
 import Sidebar from '@/components/Sidebar'
 import Editor from '@/components/Editor'
-import { JournalEntry } from '@/lib/types'
-import { getEntries, saveEntry, deleteEntry, generateId } from '@/lib/storage'
+import { JournalEntry, Folder } from '@/lib/types'
+import {
+  getEntries,
+  saveEntry,
+  deleteEntry,
+  generateId,
+  getFolders,
+  createFolder,
+  updateFolder,
+  deleteFolder,
+} from '@/lib/storage'
 
 export default function Home() {
   const [entries, setEntries] = useState<JournalEntry[]>([])
+  const [folders, setFolders] = useState<Folder[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
 
-  // Load entries from localStorage on mount
+  // Load entries and folders from localStorage on mount
   useEffect(() => {
     const loadedEntries = getEntries()
+    const loadedFolders = getFolders()
     setEntries(loadedEntries)
+    setFolders(loadedFolders)
     if (loadedEntries.length > 0) {
       setSelectedId(loadedEntries[0].id)
     }
@@ -30,6 +43,7 @@ export default function Home() {
       content: '',
       createdAt: Date.now(),
       updatedAt: Date.now(),
+      folderId: selectedFolderId || undefined,
     }
     setEntries([newEntry, ...entries])
     setSelectedId(newEntry.id)
@@ -49,6 +63,28 @@ export default function Home() {
     }
   }
 
+  const handleCreateFolder = (name: string, color?: string) => {
+    const newFolder = createFolder(name, color)
+    setFolders([...folders, newFolder])
+  }
+
+  const handleDeleteFolder = (id: string) => {
+    deleteFolder(id)
+    setFolders(folders.filter((f) => f.id !== id))
+    if (selectedFolderId === id) {
+      setSelectedFolderId(null)
+    }
+  }
+
+  const handleMoveEntry = (entryId: string, folderId: string | undefined) => {
+    const entry = entries.find((e) => e.id === entryId)
+    if (entry) {
+      const updatedEntry = { ...entry, folderId }
+      saveEntry(updatedEntry)
+      setEntries(entries.map((e) => (e.id === entryId ? updatedEntry : e)))
+    }
+  }
+
   if (!isLoaded) {
     return (
       <div className="flex items-center justify-center h-screen bg-white">
@@ -62,9 +98,15 @@ export default function Home() {
       <Sidebar
         entries={entries}
         selectedId={selectedId}
+        folders={folders}
+        selectedFolderId={selectedFolderId}
         onSelectEntry={setSelectedId}
         onNewEntry={handleNewEntry}
         onDeleteEntry={handleDeleteEntry}
+        onSelectFolder={setSelectedFolderId}
+        onCreateFolder={handleCreateFolder}
+        onDeleteFolder={handleDeleteFolder}
+        onMoveEntry={handleMoveEntry}
       />
       <Editor entry={selectedEntry} onSave={handleSaveEntry} />
     </div>
