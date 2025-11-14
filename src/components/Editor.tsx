@@ -72,58 +72,58 @@ export default function Editor({ entry, onSave }: EditorProps) {
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="flex-1 flex flex-col bg-neutral-950">
       {/* Toolbar */}
-      <div className="border-b border-slate-800 p-4 flex items-center justify-between bg-slate-900/50 backdrop-blur-sm">
+      <div className="border-b border-neutral-900 p-4 flex items-center justify-between bg-neutral-950">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setViewMode(false)}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 font-medium ${
+            className={`flex items-center gap-2 px-3 py-2 rounded transition-colors duration-200 font-medium text-sm ${
               !viewMode
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20'
-                : 'bg-slate-800 text-slate-300 hover:text-cyan-300 border border-slate-700 hover:border-cyan-500/30'
+                ? 'bg-neutral-900 text-neutral-100 border border-neutral-800'
+                : 'bg-neutral-950 text-neutral-400 hover:text-neutral-200 border border-neutral-900 hover:border-neutral-800'
             }`}
           >
-            <Edit size={18} />
+            <Edit size={16} />
             Edit
           </button>
           <button
             onClick={() => setViewMode(true)}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 font-medium ${
+            className={`flex items-center gap-2 px-3 py-2 rounded transition-colors duration-200 font-medium text-sm ${
               viewMode
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20'
-                : 'bg-slate-800 text-slate-300 hover:text-cyan-300 border border-slate-700 hover:border-cyan-500/30'
+                ? 'bg-neutral-900 text-neutral-100 border border-neutral-800'
+                : 'bg-neutral-950 text-neutral-400 hover:text-neutral-200 border border-neutral-900 hover:border-neutral-800'
             }`}
           >
-            <Eye size={18} />
+            <Eye size={16} />
             Preview
           </button>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {!isSaved && (
-            <span className="text-sm text-orange-400 font-semibold animate-pulse">Unsaved changes</span>
+            <span className="text-xs text-neutral-500 font-medium">Unsaved</span>
           )}
           <button
             onClick={() => setIsAnalysisOpen(true)}
             disabled={!content.trim()}
             title="Analyze with AI"
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
+            className={`flex items-center gap-2 px-3 py-2 rounded transition-colors duration-200 font-medium text-sm ${
               !content.trim()
-                ? 'bg-slate-800 text-slate-600 cursor-not-allowed'
-                : 'bg-gradient-to-r from-violet-500 to-pink-600 text-white hover:from-violet-400 hover:to-pink-500 shadow-lg hover:shadow-violet-500/30'
+                ? 'bg-neutral-950 text-neutral-700 cursor-not-allowed border border-neutral-900'
+                : 'bg-neutral-900 hover:bg-neutral-800 text-neutral-100 border border-neutral-800 hover:border-neutral-700'
             }`}
           >
-            <Sparkles size={18} />
+            <Sparkles size={16} />
             Analyze
           </button>
           <button
             onClick={handleSave}
             disabled={isSaved}
-            className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
+            className={`px-3 py-2 rounded transition-colors duration-200 font-medium text-sm ${
               isSaved
-                ? 'bg-slate-800 text-slate-600 cursor-not-allowed'
-                : 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-400 hover:to-teal-500 shadow-lg hover:shadow-emerald-500/30'
+                ? 'bg-neutral-950 text-neutral-700 cursor-not-allowed border border-neutral-900'
+                : 'bg-neutral-900 hover:bg-neutral-800 text-neutral-100 border border-neutral-800 hover:border-neutral-700'
             }`}
           >
             Save
@@ -139,7 +139,7 @@ export default function Editor({ entry, onSave }: EditorProps) {
           value={title}
           onChange={handleTitleChange}
           placeholder="Entry title..."
-          className="border-b border-slate-800 px-6 py-4 text-2xl font-bold bg-transparent text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-0 focus:border-cyan-500 transition-colors"
+          className="border-b border-neutral-900 px-6 py-4 text-2xl font-light bg-transparent text-neutral-50 placeholder-neutral-700 focus:outline-none focus:ring-0 focus:border-neutral-800 transition-colors"
         />
 
         {/* Content Area */}
@@ -150,7 +150,7 @@ export default function Editor({ entry, onSave }: EditorProps) {
               onChange={handleContentChange}
               onKeyDown={handleKeyDown}
               placeholder="Start writing your journal entry... (Markdown is supported)"
-              className="w-full h-full p-6 font-mono text-sm text-slate-200 bg-transparent resize-none focus:outline-none border-none placeholder-slate-600"
+              className="w-full h-full p-6 font-mono text-sm text-neutral-300 bg-transparent resize-none focus:outline-none border-none placeholder-neutral-700"
             />
           ) : (
             <div className="w-full h-full p-6 overflow-y-auto">
