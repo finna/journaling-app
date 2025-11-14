@@ -13,12 +13,12 @@ interface FolderManagerProps {
 }
 
 const FOLDER_COLORS = [
-  { name: 'slate', bg: 'bg-slate-500', light: 'bg-slate-100', text: 'text-slate-700' },
-  { name: 'blue', bg: 'bg-blue-500', light: 'bg-blue-100', text: 'text-blue-700' },
-  { name: 'emerald', bg: 'bg-emerald-500', light: 'bg-emerald-100', text: 'text-emerald-700' },
-  { name: 'amber', bg: 'bg-amber-500', light: 'bg-amber-100', text: 'text-amber-700' },
-  { name: 'rose', bg: 'bg-rose-500', light: 'bg-rose-100', text: 'text-rose-700' },
-  { name: 'violet', bg: 'bg-violet-500', light: 'bg-violet-100', text: 'text-violet-700' },
+  { name: 'cyan', bg: 'bg-cyan-500', light: 'from-cyan-500/20 to-cyan-600/10', text: 'text-cyan-300', border: 'border-cyan-500/50' },
+  { name: 'blue', bg: 'bg-blue-500', light: 'from-blue-500/20 to-blue-600/10', text: 'text-blue-300', border: 'border-blue-500/50' },
+  { name: 'emerald', bg: 'bg-emerald-500', light: 'from-emerald-500/20 to-emerald-600/10', text: 'text-emerald-300', border: 'border-emerald-500/50' },
+  { name: 'orange', bg: 'bg-orange-500', light: 'from-orange-500/20 to-orange-600/10', text: 'text-orange-300', border: 'border-orange-500/50' },
+  { name: 'pink', bg: 'bg-pink-500', light: 'from-pink-500/20 to-pink-600/10', text: 'text-pink-300', border: 'border-pink-500/50' },
+  { name: 'violet', bg: 'bg-violet-500', light: 'from-violet-500/20 to-violet-600/10', text: 'text-violet-300', border: 'border-violet-500/50' },
 ]
 
 export default function FolderManager({
@@ -47,49 +47,49 @@ export default function FolderManager({
   }
 
   return (
-    <div className="p-4 border-b border-slate-200">
+    <div className="p-4 border-b border-slate-800">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">Folders</h2>
+        <h2 className="text-xs font-black text-cyan-400 uppercase tracking-widest">Folders</h2>
         <button
           onClick={() => setIsCreating(true)}
-          className="p-1 hover:bg-slate-200 rounded transition-colors"
+          className="p-1 hover:bg-cyan-500/20 rounded transition-colors text-cyan-400 hover:text-cyan-300"
           title="Create folder"
         >
-          <Plus size={16} className="text-slate-600" />
+          <Plus size={16} />
         </button>
       </div>
 
       {/* All Entries Button */}
       <button
         onClick={() => onSelectFolder(null)}
-        className={`w-full text-left px-3 py-2 rounded-lg transition-colors mb-2 ${
+        className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 mb-2 ${
           selectedFolderId === null
-            ? 'bg-slate-300 text-slate-900 font-medium'
-            : 'text-slate-700 hover:bg-slate-100'
+            ? 'bg-gradient-to-r from-slate-700 to-slate-800 text-cyan-300 font-medium border border-cyan-500/50 shadow-lg shadow-cyan-500/10'
+            : 'text-slate-300 hover:text-cyan-300 hover:bg-slate-800/40 border border-slate-700/50 hover:border-cyan-500/30'
         }`}
       >
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-sm bg-slate-300"></div>
-          <span className="text-sm">All Entries</span>
+          <div className="w-3 h-3 rounded-sm bg-gradient-to-br from-slate-400 to-slate-500"></div>
+          <span className="text-sm font-medium">All Entries</span>
         </div>
       </button>
 
       {/* Folder List */}
       <div className="space-y-2">
         {folders.map((folder) => {
-          const colors = getColorClasses(folder.color)
+          const color = FOLDER_COLORS.find((c) => c.name === folder.color) || FOLDER_COLORS[0]
           return (
             <div key={folder.id} className="group">
               <button
                 onClick={() => onSelectFolder(folder.id)}
-                className={`w-full text-left px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${
+                className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 border ${
                   selectedFolderId === folder.id
-                    ? `${colors.light} ${colors.text} font-medium`
-                    : 'text-slate-700 hover:bg-slate-100'
+                    ? `bg-gradient-to-r ${color.light} ${color.text} font-medium ${color.border} shadow-lg shadow-${color.name}-500/20`
+                    : `text-slate-300 hover:text-${color.name}-300 bg-slate-800/20 border-slate-700/50 hover:bg-slate-800/40 hover:${color.border}`
                 }`}
               >
-                <FolderIcon size={16} className={colors.bg.replace('bg-', 'text-')} />
-                <span className="text-sm flex-1 truncate">{folder.name}</span>
+                <FolderIcon size={16} className={color.text} />
+                <span className="text-sm flex-1 truncate font-medium">{folder.name}</span>
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
@@ -97,9 +97,9 @@ export default function FolderManager({
                       onDeleteFolder(folder.id)
                     }
                   }}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-100 rounded"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-500/20 rounded text-red-400 hover:text-red-300"
                 >
-                  <Trash2 size={14} className="text-red-600" />
+                  <Trash2 size={14} />
                 </button>
               </button>
             </div>
@@ -109,14 +109,14 @@ export default function FolderManager({
 
       {/* Create Folder Form */}
       {isCreating && (
-        <div className="mt-4 p-3 bg-slate-100 rounded-lg">
+        <div className="mt-4 p-4 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 rounded-lg">
           <input
             type="text"
             placeholder="Folder name"
             value={newFolderName}
             onChange={(e) => setNewFolderName(e.target.value)}
             autoFocus
-            className="w-full px-2 py-1 mb-3 border border-slate-300 rounded text-sm"
+            className="w-full px-3 py-2 mb-3 border border-slate-700 rounded-lg bg-slate-900 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors"
             onKeyDown={(e) => {
               if (e.key === 'Enter') handleCreateFolder()
               if (e.key === 'Escape') {
@@ -125,16 +125,17 @@ export default function FolderManager({
               }
             }}
           />
-          <div className="mb-3">
-            <p className="text-xs text-slate-600 mb-2">Color:</p>
-            <div className="flex gap-2 flex-wrap">
+          <div className="mb-4">
+            <p className="text-xs text-cyan-400 font-semibold mb-2 uppercase tracking-widest">Color:</p>
+            <div className="flex gap-3 flex-wrap">
               {FOLDER_COLORS.map((color) => (
                 <button
                   key={color.name}
                   onClick={() => setSelectedColor(color.name)}
-                  className={`w-6 h-6 rounded-full ${color.bg} ${
-                    selectedColor === color.name ? 'ring-2 ring-offset-1 ring-slate-400' : ''
+                  className={`w-7 h-7 rounded-full ${color.bg} transition-all duration-200 ${
+                    selectedColor === color.name ? 'ring-2 ring-offset-2 ring-offset-slate-900 ring-cyan-400 scale-110' : 'hover:scale-105'
                   }`}
+                  title={color.name}
                 />
               ))}
             </div>
@@ -142,7 +143,7 @@ export default function FolderManager({
           <div className="flex gap-2">
             <button
               onClick={handleCreateFolder}
-              className="flex-1 px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition-colors"
+              className="flex-1 px-2 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-sm font-semibold rounded-lg transition-all shadow-lg hover:shadow-cyan-500/30"
             >
               Create
             </button>
@@ -151,7 +152,7 @@ export default function FolderManager({
                 setIsCreating(false)
                 setNewFolderName('')
               }}
-              className="flex-1 px-2 py-1 bg-slate-300 hover:bg-slate-400 text-slate-900 text-sm rounded transition-colors"
+              className="flex-1 px-2 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-semibold rounded-lg transition-colors"
             >
               Cancel
             </button>

@@ -41,13 +41,15 @@ export default function Sidebar({
       : sortedEntries.filter((e) => e.folderId === selectedFolderId)
 
   return (
-    <div className="w-80 bg-slate-50 border-r border-slate-200 flex flex-col h-screen">
+    <div className="w-80 bg-gradient-to-b from-slate-900 to-slate-950 border-r border-slate-800 flex flex-col h-screen">
       {/* Header */}
-      <div className="p-6 border-b border-slate-200">
-        <h1 className="text-2xl font-bold text-slate-900 mb-4">Journal</h1>
+      <div className="p-6 border-b border-slate-800">
+        <h1 className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mb-4">
+          Journal
+        </h1>
         <button
           onClick={onNewEntry}
-          className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-cyan-500/50"
         >
           <Plus size={18} />
           New Entry
@@ -67,31 +69,31 @@ export default function Sidebar({
       <div className="flex-1 overflow-y-auto">
         {filteredEntries.length === 0 ? (
           <div className="p-6 text-center">
-            <p className="text-slate-500 text-sm">No entries yet</p>
-            <p className="text-slate-400 text-xs mt-2">Create one to get started</p>
+            <p className="text-slate-400 text-sm">No entries yet</p>
+            <p className="text-slate-500 text-xs mt-2">Create one to get started</p>
           </div>
         ) : (
           <div className="space-y-2 p-4">
             {filteredEntries.map((entry) => (
               <div
                 key={entry.id}
-                className={`group p-4 rounded-lg cursor-pointer transition-all ${
+                className={`group p-4 rounded-lg cursor-pointer transition-all duration-200 ${
                   selectedId === entry.id
-                    ? 'bg-blue-100 border border-blue-300'
-                    : 'bg-white hover:bg-slate-100 border border-transparent hover:border-slate-200'
+                    ? 'bg-gradient-to-r from-cyan-500/30 to-blue-600/30 border border-cyan-500/50 shadow-lg shadow-cyan-500/20'
+                    : 'bg-slate-800/40 hover:bg-slate-800/60 border border-slate-700/50 hover:border-cyan-500/30'
                 }`}
               >
                 <button
                   onClick={() => onSelectEntry(entry.id)}
                   className="w-full text-left"
                 >
-                  <h3 className="font-semibold text-slate-900 text-sm truncate">
+                  <h3 className="font-semibold text-slate-100 text-sm truncate group-hover:text-cyan-300 transition-colors">
                     {entry.title || 'Untitled'}
                   </h3>
                   <p className="text-xs text-slate-500 mt-1">
                     {formatDate(entry.updatedAt)}
                   </p>
-                  <p className="text-xs text-slate-600 mt-2 line-clamp-2">
+                  <p className="text-xs text-slate-400 mt-2 line-clamp-2">
                     {truncateText(entry.content, 60)}
                   </p>
                 </button>
